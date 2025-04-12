@@ -1,9 +1,20 @@
 # app/main.py
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware  # 👈 NEW
 from pydantic import BaseModel
 import joblib
 
 app = FastAPI()
+
+# 👇 Allow requests from ANY origin
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # 👈 Allow all origins
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 model = joblib.load("app/spam_model.pkl")
 
 class MessageInput(BaseModel):
